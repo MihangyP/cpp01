@@ -1,5 +1,12 @@
 #include <Zombie.hpp>
 
+Zombie::Zombie(string name)
+{
+	this->name = name;	
+}
+
+Zombie::Zombie(void) : name("Default") {};
+
 Zombie*	newZombie(std::string name)
 {
 	Zombie* zombieDonto = new Zombie(name);
@@ -12,9 +19,12 @@ void	randomChump(std::string name)
 	zombieCrimy.announce();
 }
 
-Zombie::Zombie(string name)
+Zombie*	zombieHorde( int N, std::string name )
 {
-	this->name = name;	
+	Zombie*	zombies = new Zombie[N];
+	for (int i = 0; i < N; ++i)
+		new (&zombies[i]) Zombie(name);
+	return (zombies);
 }
 
 void	Zombie::announce(void)
