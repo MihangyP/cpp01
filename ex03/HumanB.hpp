@@ -6,7 +6,7 @@
 class	HumanB
 {
 	private:
-		Weapon	weapon;
+		Weapon	*weapon;
 		string	name;
 
 	public:
@@ -14,7 +14,7 @@ class	HumanB
 		~HumanB(void);
 		
 		void	attack(void);
-		void	setWeapon(Weapon w);
+		void	setWeapon(Weapon& w);
 };
 
 #endif // __HUMAN_B_HPP__
