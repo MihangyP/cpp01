@@ -1,21 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pmihangy <pmihangy@student.42antanana      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/28 09:57:28 by pmihangy          #+#    #+#             */
-/*   Updated: 2025/01/28 12:33:09 by pmihangy         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
+#include <cstdio>
 #include <string>
 
 typedef std::string string;
+
+#define PRINT_ERROR_AND_RETURN(filename) 											\
+		{							     											\
+			std::cerr << "Error: " << filename + " could not opened" << std::endl;  \
+			return (1);																\
+		}								 											\
 
 int	main(int ac, char **av)
 {
@@ -33,17 +28,14 @@ int	main(int ac, char **av)
 
 	fs.open(file_name, std::fstream::in);
 	if (!fs.is_open())
-	{
-		std::cerr << "Error: " << file_name + " could not opened" << std::endl;
-		return (1);
-	}
-
+		PRINT_ERROR_AND_RETURN(file_name)
+	
+	std::ifstream	file(new_file_name);
+	if (file.is_open()) // Check if <filename>.replace already exists
+		remove(new_file_name.c_str());
 	new_file.open(new_file_name, std::fstream::out | std::fstream::app);
 	if (!new_file.is_open())
-	{
-		std::cerr << "Error: " << new_file_name + " could not opened" << std::endl;
-		return (1);
-	}
+		PRINT_ERROR_AND_RETURN(new_file_name)
 
 	string	data;
 	while (std::getline(fs, data))
@@ -56,9 +48,8 @@ int	main(int ac, char **av)
 			{
 				if (i == (int)pos)
 				{
-					for (int j = 0; j < (int)s2.length(); ++j)
-						new_file << s2.at(j);
-					i += s2.length();
+					new_file << s2;
+					i += s1.length();
 				}
 				else
 				{
@@ -66,10 +57,10 @@ int	main(int ac, char **av)
 					++i;
 				}
 			}
-			new_file << std::endl;
 		}
 		else
-			new_file << data << std::endl;
+			new_file << data;
+		new_file << std::endl;
 	}
 	fs.close();
 	new_file.close();
